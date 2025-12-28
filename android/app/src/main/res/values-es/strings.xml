@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Schoolerz</string>
+    <string name="feed_title">Inicio</string>
+    <string name="post_type_offer">Oferta</string>
+    <string name="post_type_request">Solicitud</string>
+    <string name="composer_placeholder">¿En qué necesitas ayuda?</string>
+    <string name="comments_title">Comentarios</string>
+    <string name="settings_title">Configuración</string>
+    <string name="pin_enter">Ingresar PIN</string>
+    <string name="pin_create">Crear un PIN</string>
+    <string name="pin_confirm">Confirmar PIN</string>
+</resources>
