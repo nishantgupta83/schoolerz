@@ -1,0 +1,92 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuth() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    function isOwner(userId) { return isAuth() && uid() == userId; }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuth();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId)
+        && !('usr_isBlocked' in request.resource.data)
+        && !('usr_strikeCount' in request.resource.data)
+        && !('usr_isChatRestricted' in request.resource.data);
+      allow delete: if false;
+    }
+
+    // Posts collection - writes via Cloud Function only
+    match /posts/{postId} {
+      allow read: if isAuth();
+      allow create, update, delete: if false;
+
+      // Comments - writes via Cloud Function only
+      match /comments/{commentId} {
+        allow read: if isAuth();
+        allow create, update, delete: if false;
+      }
+
+      // Likes - direct client writes allowed
+      match /likes/{likeUserId} {
+        allow read: if isAuth();
+        allow create, delete: if isAuth() && likeUserId == uid();
+      }
+    }
+
+    // Booking Requests - writes via Cloud Function only
+    match /bookingRequests/{requestId} {
+      allow read: if isAuth()
+        && (resource.data.br_providerId == uid() || resource.data.br_requesterId == uid());
+      allow create, update, delete: if false;
+    }
+
+    // Shortlists - writes via Cloud Function only
+    match /shortlists/{shortlistId} {
+      allow read: if isAuth()
+        && (resource.data.sl_parentId == uid() || resource.data.sl_childTeenId == uid());
+      allow create, update, delete: if false;
+    }
+
+    // Conversations - writes via Cloud Function only
+    match /conversations/{conversationId} {
+      allow read: if isAuth() && uid() in resource.data.cv_participants;
+      allow create, update, delete: if false;
+
+      // Messages - writes via Cloud Function only
+      match /messages/{messageId} {
+        allow read: if isAuth();
+        allow create, update, delete: if false;
+      }
+    }
+
+    // Contact Shares - writes via Cloud Function only
+    match /contactShares/{shareId} {
+      allow read: if isAuth()
+        && (resource.data.cs_fromUserId == uid() || resource.data.cs_toUserId == uid());
+      allow create, update, delete: if false;
+    }
+
+    // Reports - Cloud Function only
+    match /reports/{reportId} {
+      allow read, write: if false;
+    }
+
+    // Blocks - Cloud Function only
+    match /blocks/{blockId} {
+      allow read: if isAuth() && blockId.matches(uid() + '_.*');
+      allow create, delete: if false;
+    }
+
+    // Rate Limits - internal only
+    match /rateLimits/{limitId} {
+      allow read, write: if false;
+    }
+
+    // Config - read-only
+    match /config/{docId} {
+      allow read: if isAuth();
+      allow write: if false;
+    }
+  }
+}
