@@ -3,7 +3,7 @@ package com.schoolerz.presentation.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -12,11 +12,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.schoolerz.presentation.feed.FeedScreen
+import com.schoolerz.presentation.profile.ProfileScreen
 import com.schoolerz.presentation.settings.SettingsScreen
 
 sealed class Screen(val route: String) {
     object Feed : Screen("feed")
-    object Explore : Screen("explore")
+    object Profile : Screen("profile")
     object Settings : Screen("settings")
 }
 
@@ -36,9 +37,9 @@ fun AppNavigation() {
                 )
                 NavigationBarItem(
                     selected = selectedTab == 1,
-                    onClick = { selectedTab = 1; navController.navigate(Screen.Explore.route) },
-                    icon = { Icon(Icons.Default.Search, contentDescription = null) },
-                    label = { Text("Explore") }
+                    onClick = { selectedTab = 1; navController.navigate(Screen.Profile.route) },
+                    icon = { Icon(Icons.Default.Person, contentDescription = null) },
+                    label = { Text("Profile") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 2,
@@ -51,7 +52,7 @@ fun AppNavigation() {
     ) { padding ->
         NavHost(navController, startDestination = Screen.Feed.route, Modifier.padding(padding)) {
             composable(Screen.Feed.route) { FeedScreen(onOpenComments = {}) }
-            composable(Screen.Explore.route) { ExploreScreen() }
+            composable(Screen.Profile.route) { ProfileScreen() }
             composable(Screen.Settings.route) { SettingsScreen() }
         }
     }

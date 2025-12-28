@@ -2,9 +2,9 @@ package com.schoolerz.presentation.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.schoolerz.domain.model.Post
 import com.schoolerz.domain.model.PostType
+import com.schoolerz.domain.repository.AuthService
 import com.schoolerz.domain.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,8 @@ data class FeedState(
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    private val repository: PostRepository
+    private val repository: PostRepository,
+    private val authService: AuthService
 ) : ViewModel() {
     private val _state = MutableStateFlow(FeedState())
     val state = _state.asStateFlow()
@@ -61,8 +62,8 @@ class FeedViewModel @Inject constructor(
     fun createPost(type: PostType, body: String, neighborhood: String) {
         val post = Post(
             type = type,
-            authorId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous",
-            authorName = "Current User",
+            authorId = authService.currentUserId(),
+            authorName = authService.currentUserName(),
             neighborhood = neighborhood,
             body = body
         )

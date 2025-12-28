@@ -19,11 +19,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        // Firebase anonymous auth on app launch (before PIN screen)
-        FirebaseApp.configure()
-        Task {
-            await AuthService.shared.signInAnonymously()
+        // Only initialize Firebase if in firebase mode (config file exists)
+        if AppMode.current.shouldInitializeFirebase {
+            FirebaseApp.configure()
+            Task {
+                await AuthService.shared.signInAnonymously()
+            }
         }
+        // In mock mode, app runs entirely on local mock data
         return true
     }
 }

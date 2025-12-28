@@ -112,6 +112,7 @@ fun FeedScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FilterSegment(selected: PostType?, onSelect: (PostType?) -> Unit) {
     Row(
