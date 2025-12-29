@@ -92,12 +92,15 @@ private fun TypeBadge(type: PostType) {
     }
 }
 
+// Cached date formatter to avoid creating new instances on every recomposition
+private val dateFormatter by lazy { SimpleDateFormat("MMM d", Locale.getDefault()) }
+
 private fun formatTimeAgo(date: Date): String {
     val diff = System.currentTimeMillis() - date.time
     return when {
         diff < 60_000 -> "now"
         diff < 3600_000 -> "${diff / 60_000}m"
         diff < 86400_000 -> "${diff / 3600_000}h"
-        else -> SimpleDateFormat("MMM d", Locale.getDefault()).format(date)
+        else -> dateFormatter.format(date)
     }
 }

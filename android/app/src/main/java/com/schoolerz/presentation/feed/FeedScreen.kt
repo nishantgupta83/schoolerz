@@ -44,6 +44,9 @@ fun FeedScreen(
         }
     }
 
+    // Use derived StateFlow for filtered posts - single source of truth
+    val filteredPosts by viewModel.filteredPosts.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Feed") })
@@ -61,13 +64,11 @@ fun FeedScreen(
                 onSelect = { viewModel.setFilter(it) }
             )
 
-            val posts = state.filter?.let { f -> state.posts.filter { it.type == f } } ?: state.posts
-
             when {
                 state.isLoading -> {
                     repeat(5) { ShimmerPostCard(modifier = Modifier.padding(Tokens.Spacing.m)) }
                 }
-                posts.isEmpty() && !state.isLoading -> {
+                filteredPosts.isEmpty() && !state.isLoading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -88,7 +89,7 @@ fun FeedScreen(
                 }
                 else -> {
                     LazyColumn {
-                        items(posts, key = { it.id }) { post ->
+                        items(filteredPosts, key = { it.id }) { post ->
                             PostCard(
                                 post = post,
                                 onComment = { onOpenComments(post) },

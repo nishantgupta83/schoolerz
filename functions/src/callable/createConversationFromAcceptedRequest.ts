@@ -6,6 +6,7 @@ import { getUserOrThrow, requireAuth, requireNotBlocked } from "../utils/authz";
  * Create a conversation when a booking request is accepted.
  * Called automatically or manually after Teen1 accepts a request.
  * Participants: Parent (requester) + Teen1 (provider)
+ * Uses transaction to prevent duplicate conversations.
  */
 export const createConversationFromAcceptedRequest = onCall(async (req) => {
   const uid = await requireAuth(req.auth);
@@ -39,40 +40,42 @@ export const createConversationFromAcceptedRequest = onCall(async (req) => {
     throw new HttpsError("permission-denied", "Not a participant in this booking");
   }
 
-  // Check if conversation already exists for this booking
-  const existingConv = await admin.firestore()
-    .collection("conversations")
-    .where("cv_bookingRequestId", "==", requestId)
-    .limit(1)
-    .get();
+  // Use a deterministic doc ID based on booking request to prevent duplicates
+  const convDocId = `conv_${requestId}`;
+  const convRef = admin.firestore().collection("conversations").doc(convDocId);
 
-  if (!existingConv.empty) {
-    // Return existing conversation
-    return { ok: true, conversationId: existingConv.docs[0].id, existing: true };
-  }
+  // Use transaction to prevent race conditions creating duplicate conversations
+  const result = await admin.firestore().runTransaction(async (tx) => {
+    const existingSnap = await tx.get(convRef);
 
-  // Participants: Parent (requester) + Teen1 (provider)
-  const participants = [br.br_requesterId, br.br_providerId];
+    if (existingSnap.exists) {
+      // Return existing conversation
+      return { conversationId: convDocId, existing: true };
+    }
 
-  const now = admin.firestore.FieldValue.serverTimestamp();
-  const conversationDoc = {
-    cv_bookingRequestId: requestId,
-    cv_postId: br.br_postId,
-    cv_postTitle: br.br_postTitle ?? "",
-    cv_participants: participants,
-    cv_participantSnapshots: {
-      [br.br_requesterId]: br.br_requesterSnapshot ?? {},
-      [br.br_providerId]: {}, // Provider snapshot fetched separately if needed
-    },
-    cv_lastMessageAt: null,
-    cv_lastMessagePreview: null,
-    cv_messageCount: 0,
-    cv_createdAt: now,
-    cv_updatedAt: now,
-  };
+    // Participants: Parent (requester) + Teen1 (provider)
+    const participants = [br.br_requesterId, br.br_providerId];
 
-  const convRef = admin.firestore().collection("conversations").doc();
-  await convRef.set(conversationDoc);
+    const now = admin.firestore.FieldValue.serverTimestamp();
+    const conversationDoc = {
+      cv_bookingRequestId: requestId,
+      cv_postId: br.br_postId,
+      cv_postTitle: br.br_postTitle ?? "",
+      cv_participants: participants,
+      cv_participantSnapshots: {
+        [br.br_requesterId]: br.br_requesterSnapshot ?? {},
+        [br.br_providerId]: {},
+      },
+      cv_lastMessageAt: null,
+      cv_lastMessagePreview: null,
+      cv_messageCount: 0,
+      cv_createdAt: now,
+      cv_updatedAt: now,
+    };
 
-  return { ok: true, conversationId: convRef.id, existing: false };
+    tx.set(convRef, conversationDoc);
+    return { conversationId: convDocId, existing: false };
+  });
+
+  return { ok: true, ...result };
 });
