@@ -5,10 +5,7 @@ final class Container {
     static let shared = Container()
     private init() {}
 
-    // Repository selection based on AppMode
-    // In mock mode: always use mock repositories
-    // In firebase mode: use Firebase repositories (when implemented)
-
+    /// Repository selection based on AppMode
     lazy var postRepository: PostRepository = {
         switch AppMode.current {
         case .mock:
@@ -30,12 +27,7 @@ final class Container {
     }()
 
     lazy var profileRepository: ProfileRepository = {
-        switch AppMode.current {
-        case .mock:
-            return MockProfileRepository()
-        case .firebase:
-            // TODO: Return FirebaseProfileRepository when implemented
-            return MockProfileRepository()
-        }
+        // Always use local persistence for profile (syncs with Firebase later)
+        return LocalProfileRepository()
     }()
 }

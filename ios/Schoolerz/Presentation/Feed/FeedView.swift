@@ -29,7 +29,7 @@ struct FeedView: View {
                 .padding(.horizontal, Tokens.Spacing.m)
             }
             .refreshable { await viewModel.refreshPosts() }
-            .navigationTitle(String(localized: "feed_title"))
+            .navigationTitle("Feed")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button { showComposer = true } label: {

@@ -1,13 +1,12 @@
 import Foundation
 
-/// Determines which backend the app uses
+/// App mode for switching between mock and Firebase backends
 enum AppMode {
     case mock
     case firebase
 
-    /// Current app mode - determined at startup
+    /// Determines current mode based on Firebase config existence
     static var current: AppMode = {
-        // Check if GoogleService-Info.plist exists
         if Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil {
             return .firebase
         }
@@ -17,5 +16,13 @@ enum AppMode {
     /// Whether Firebase should be initialized
     var shouldInitializeFirebase: Bool {
         self == .firebase
+    }
+
+    /// Debug description
+    var description: String {
+        switch self {
+        case .mock: return "Mock Mode"
+        case .firebase: return "Firebase Mode"
+        }
     }
 }

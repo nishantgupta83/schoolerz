@@ -19,3 +19,6 @@ google-services.json
 *.p12
 *.mobileprovision
 *.cer
+
+# Archives
+*.zip

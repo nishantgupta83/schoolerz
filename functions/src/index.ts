@@ -20,3 +20,6 @@ export { sendMessage } from "./callable/sendMessage";
 // Contact Sharing (Milestone C)
 export { requestContactShare } from "./callable/requestContactShare";
 export { approveContactShare } from "./callable/approveContactShare";
+
+// Scheduled Functions
+export { cleanupRateLimits } from "./scheduled/cleanupRateLimits";

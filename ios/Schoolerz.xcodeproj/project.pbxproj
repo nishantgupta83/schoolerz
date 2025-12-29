@@ -1,0 +1,603 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00000001 /* SchoolerzApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000101; };
+		00000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000102; };
+		00000003 /* AppMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000103; };
+		00000004 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000104; };
+		00000005 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000105; };
+		00000006 /* BiometricAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000106; };
+		00000007 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000107; };
+		00000008 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000108; };
+		00000009 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000109; };
+		0000000A /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000010A; };
+		0000000B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000010B; };
+		0000000C /* TokenDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000010C; };
+		0000000D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000010D; };
+		0000000E /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000010E; };
+		0000000F /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000010F; };
+		00000010 /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000110; };
+		00000011 /* CommentsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000111; };
+		00000012 /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000112; };
+		00000013 /* MockPostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000113; };
+		00000014 /* MockCommentsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000114; };
+		00000015 /* MockProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000115; };
+		00000016 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000116; };
+		00000017 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000117; };
+		00000018 /* PostCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000118; };
+		00000019 /* ShimmerPostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000119; };
+		0000001A /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000011A; };
+		0000001B /* CommentsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000011B; };
+		0000001C /* SetPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000011C; };
+		0000001D /* PinLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000011D; };
+		0000001E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000011E; };
+		0000001F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000011F; };
+		00000020 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000120; };
+		00000021 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000121; };
+		00000022 /* LocalProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000122; };
+		00000023 /* SchoolDomainWhitelist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000123; };
+		00000024 /* EmailVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000124; };
+		00000025 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000125; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00000100 /* Schoolerz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schoolerz.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		00000101 /* SchoolerzApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolerzApp.swift; sourceTree = "<group>"; };
+		00000102 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		00000103 /* AppMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMode.swift; sourceTree = "<group>"; };
+		00000104 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		00000105 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		00000106 /* BiometricAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuth.swift; sourceTree = "<group>"; };
+		00000107 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
+		00000108 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.swift; sourceTree = "<group>"; };
+		00000109 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		0000010A /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
+		0000010B /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		0000010C /* TokenDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDemoView.swift; sourceTree = "<group>"; };
+		0000010D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		0000010E /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		0000010F /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		00000110 /* PostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepository.swift; sourceTree = "<group>"; };
+		00000111 /* CommentsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsRepository.swift; sourceTree = "<group>"; };
+		00000112 /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
+		00000113 /* MockPostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPostRepository.swift; sourceTree = "<group>"; };
+		00000114 /* MockCommentsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCommentsRepository.swift; sourceTree = "<group>"; };
+		00000115 /* MockProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProfileRepository.swift; sourceTree = "<group>"; };
+		00000116 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		00000117 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		00000118 /* PostCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardView.swift; sourceTree = "<group>"; };
+		00000119 /* ShimmerPostCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerPostCard.swift; sourceTree = "<group>"; };
+		0000011A /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
+		0000011B /* CommentsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsSheetView.swift; sourceTree = "<group>"; };
+		0000011C /* SetPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPinView.swift; sourceTree = "<group>"; };
+		0000011D /* PinLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLoginView.swift; sourceTree = "<group>"; };
+		0000011E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0000011F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		00000120 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		00000121 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		00000122 /* LocalProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProfileRepository.swift; sourceTree = "<group>"; };
+		00000123 /* SchoolDomainWhitelist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolDomainWhitelist.swift; sourceTree = "<group>"; };
+		00000124 /* EmailVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationView.swift; sourceTree = "<group>"; };
+		00000125 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00000200 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00000300 = {
+			isa = PBXGroup;
+			children = (
+				00000301 /* Schoolerz */,
+				00000302 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		00000301 /* Schoolerz */ = {
+			isa = PBXGroup;
+			children = (
+				00000310 /* App */,
+				00000311 /* Core */,
+				00000312 /* DesignSystem */,
+				00000313 /* Domain */,
+				00000314 /* Data */,
+				00000315 /* Presentation */,
+			);
+			path = Schoolerz;
+			sourceTree = "<group>";
+		};
+		00000302 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00000100 /* Schoolerz.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00000310 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				00000101 /* SchoolerzApp.swift */,
+				00000102 /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		00000311 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				00000103 /* AppMode.swift */,
+				00000320 /* DI */,
+				00000321 /* Utilities */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		00000320 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				00000107 /* Container.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		00000321 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				00000104 /* AuthService.swift */,
+				00000105 /* KeychainManager.swift */,
+				00000106 /* BiometricAuth.swift */,
+				00000125 /* NotificationManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		00000312 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				00000108 /* Tokens.swift */,
+				00000109 /* Colors.swift */,
+				0000010A /* Typography.swift */,
+				0000010B /* Theme.swift */,
+				0000010C /* TokenDemoView.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		00000313 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				00000330 /* Models */,
+				00000331 /* Repositories */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		00000330 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0000010D /* Post.swift */,
+				0000010E /* Comment.swift */,
+				0000010F /* Profile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		00000331 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				00000110 /* PostRepository.swift */,
+				00000111 /* CommentsRepository.swift */,
+				00000112 /* ProfileRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		00000314 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				00000340 /* Mock */,
+				00000341 /* Local */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		00000341 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				00000122 /* LocalProfileRepository.swift */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
+		00000340 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				00000113 /* MockPostRepository.swift */,
+				00000114 /* MockCommentsRepository.swift */,
+				00000115 /* MockProfileRepository.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		00000315 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				00000350 /* Feed */,
+				00000354 /* Profile */,
+				00000351 /* Auth */,
+				00000352 /* Settings */,
+				00000353 /* Navigation */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		00000354 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				00000120 /* ProfileView.swift */,
+				00000121 /* ProfileViewModel.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		00000350 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				00000116 /* FeedView.swift */,
+				00000117 /* FeedViewModel.swift */,
+				00000118 /* PostCardView.swift */,
+				00000119 /* ShimmerPostCard.swift */,
+				0000011A /* PostComposerView.swift */,
+				0000011B /* CommentsSheetView.swift */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
+		00000351 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				0000011C /* SetPinView.swift */,
+				0000011D /* PinLoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		00000352 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				0000011E /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		00000353 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				0000011F /* MainTabView.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		00000400 /* Schoolerz */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00000500;
+			buildPhases = (
+				00000401 /* Sources */,
+				00000200 /* Frameworks */,
+				00000402 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Schoolerz;
+			productName = Schoolerz;
+			productReference = 00000100 /* Schoolerz.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		00000600 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					00000400 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 00000700;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 00000300;
+			productRefGroup = 00000302 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				00000400 /* Schoolerz */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00000402 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00000401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00000001 /* SchoolerzApp.swift in Sources */,
+				00000002 /* ContentView.swift in Sources */,
+				00000003 /* AppMode.swift in Sources */,
+				00000004 /* AuthService.swift in Sources */,
+				00000005 /* KeychainManager.swift in Sources */,
+				00000006 /* BiometricAuth.swift in Sources */,
+				00000007 /* Container.swift in Sources */,
+				00000008 /* Tokens.swift in Sources */,
+				00000009 /* Colors.swift in Sources */,
+				0000000A /* Typography.swift in Sources */,
+				0000000B /* Theme.swift in Sources */,
+				0000000C /* TokenDemoView.swift in Sources */,
+				0000000D /* Post.swift in Sources */,
+				0000000E /* Comment.swift in Sources */,
+				0000000F /* Profile.swift in Sources */,
+				00000010 /* PostRepository.swift in Sources */,
+				00000011 /* CommentsRepository.swift in Sources */,
+				00000012 /* ProfileRepository.swift in Sources */,
+				00000013 /* MockPostRepository.swift in Sources */,
+				00000014 /* MockCommentsRepository.swift in Sources */,
+				00000015 /* MockProfileRepository.swift in Sources */,
+				00000016 /* FeedView.swift in Sources */,
+				00000017 /* FeedViewModel.swift in Sources */,
+				00000018 /* PostCardView.swift in Sources */,
+				00000019 /* ShimmerPostCard.swift in Sources */,
+				0000001A /* PostComposerView.swift in Sources */,
+				0000001B /* CommentsSheetView.swift in Sources */,
+				0000001C /* SetPinView.swift in Sources */,
+				0000001D /* PinLoginView.swift in Sources */,
+				0000001E /* SettingsView.swift in Sources */,
+				0000001F /* MainTabView.swift in Sources */,
+				00000020 /* ProfileView.swift in Sources */,
+				00000021 /* ProfileViewModel.swift in Sources */,
+				00000022 /* LocalProfileRepository.swift in Sources */,
+				00000025 /* NotificationManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		00000501 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Schoolerz;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.schoolerz.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		00000502 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Schoolerz;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.schoolerz.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		00000701 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		00000702 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00000500 /* Build configuration list for PBXNativeTarget "Schoolerz" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000501 /* Debug */,
+				00000502 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00000700 /* Build configuration list for PBXProject "Schoolerz" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000701 /* Debug */,
+				00000702 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 00000600 /* Project object */;
+}

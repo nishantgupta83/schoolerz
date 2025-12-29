@@ -1,5 +1,8 @@
 import Foundation
+import SwiftUI
+#if canImport(FirebaseFirestore)
 import FirebaseFirestore
+#endif
 
 /// Types of posts in the feed
 enum PostType: String, Codable, CaseIterable {
@@ -8,8 +11,8 @@ enum PostType: String, Codable, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .offer: return String(localized: "post_type_offer")
-        case .request: return String(localized: "post_type_request")
+        case .offer: return "Offer"
+        case .request: return "Request"
         }
     }
 
@@ -57,6 +60,7 @@ struct Post: Identifiable, Codable, Equatable {
 
     // MARK: - Firestore Serialization
 
+    #if canImport(FirebaseFirestore)
     func toFirestoreDict() -> [String: Any] {
         [
             "id": id,
@@ -99,6 +103,7 @@ struct Post: Identifiable, Codable, Equatable {
             self.createdAt = Date()
         }
     }
+    #endif
 }
 
 // MARK: - Time Ago Extension
@@ -118,5 +123,3 @@ extension Post {
             .joined()
     }
 }
-
-import SwiftUI

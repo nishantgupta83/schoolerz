@@ -1,5 +1,8 @@
 import SwiftUI
+import UserNotifications
+#if canImport(FirebaseCore)
 import FirebaseCore
+#endif
 
 @main
 struct SchoolerzApp: App {
@@ -10,6 +13,10 @@ struct SchoolerzApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(appState)
+                .task {
+                    // Set notification delegate to enable foreground notifications
+                    UNUserNotificationCenter.current().delegate = NotificationManager.shared
+                }
         }
     }
 }
@@ -19,14 +26,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        // Only initialize Firebase if in firebase mode (config file exists)
+        // Only initialize Firebase if in firebase mode and config exists
         if AppMode.current.shouldInitializeFirebase {
+            #if canImport(FirebaseCore)
             FirebaseApp.configure()
             Task {
                 await AuthService.shared.signInAnonymously()
             }
+            #endif
         }
-        // In mock mode, app runs entirely on local mock data
+        print("App launched in \(AppMode.current.description)")
         return true
     }
 }

@@ -5,6 +5,8 @@ struct CommentsSheetView: View {
     @State private var comments: [Comment] = []
     @State private var newComment = ""
     @State private var isLoading = true
+    @State private var isSending = false
+    @State private var errorMessage: String?
     @Environment(\.dismiss) private var dismiss
 
     private let repository: CommentsRepository = Container.shared.commentsRepository
@@ -21,6 +23,14 @@ struct CommentsSheetView: View {
                         CommentRow(comment: comment)
                     }
                     .listStyle(.plain)
+                }
+
+                if let errorMessage {
+                    Text(errorMessage)
+                        .font(Typography.caption)
+                        .foregroundStyle(.red)
+                        .padding(.horizontal, Tokens.Spacing.m)
+                        .padding(.top, Tokens.Spacing.xs)
                 }
 
                 Divider()
@@ -42,33 +52,57 @@ struct CommentsSheetView: View {
         HStack(spacing: Tokens.Spacing.s) {
             TextField("Add a comment...", text: $newComment)
                 .textFieldStyle(.roundedBorder)
+                .disabled(isSending)
             Button {
                 Task { await addComment() }
             } label: {
-                Image(systemName: "arrow.up.circle.fill")
-                    .font(.title2)
+                if isSending {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                } else {
+                    Image(systemName: "arrow.up.circle.fill")
+                        .font(.title2)
+                }
             }
-            .disabled(newComment.trimmingCharacters(in: .whitespaces).isEmpty)
+            .disabled(newComment.trimmingCharacters(in: .whitespaces).isEmpty || isSending)
         }
         .padding(Tokens.Spacing.m)
     }
 
     private func loadComments() async {
         isLoading = true
-        comments = (try? await repository.fetchComments(for: post.id)) ?? []
+        errorMessage = nil
+        do {
+            comments = try await repository.fetchComments(for: post.id)
+        } catch {
+            errorMessage = "Failed to load comments"
+        }
         isLoading = false
     }
 
     private func addComment() async {
+        let commentText = newComment.trimmingCharacters(in: .whitespaces)
+        guard !commentText.isEmpty else { return }
+
+        isSending = true
+        errorMessage = nil
+
         let comment = Comment(
             postId: post.id,
             authorId: AuthService.shared.currentUserId ?? "anonymous",
             authorName: "Current User",
-            text: newComment
+            text: commentText
         )
-        try? await repository.addComment(comment)
-        comments.append(comment)
-        newComment = ""
+
+        do {
+            try await repository.addComment(comment)
+            comments.append(comment)
+            newComment = ""
+        } catch {
+            errorMessage = "Failed to add comment. Please try again."
+        }
+
+        isSending = false
     }
 }
 

@@ -1,7 +1,7 @@
 import Foundation
 
 final class MockPostRepository: PostRepository {
-    private var posts: [Post] = Self.generateMockPosts()
+    private lazy var posts: [Post] = MockPostRepository.generateMockPosts()
 
     func fetchPosts() async throws -> [Post] {
         try await Task.sleep(for: .milliseconds(500))

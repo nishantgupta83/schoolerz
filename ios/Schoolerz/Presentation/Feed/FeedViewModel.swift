@@ -11,8 +11,8 @@ final class FeedViewModel {
 
     private let repository: PostRepository
 
-    init(repository: PostRepository = Container.shared.postRepository) {
-        self.repository = repository
+    init(repository: PostRepository? = nil) {
+        self.repository = repository ?? Container.shared.postRepository
     }
 
     var filteredPosts: [Post] {

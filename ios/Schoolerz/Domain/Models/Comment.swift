@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(FirebaseFirestore)
 import FirebaseFirestore
+#endif
 
 /// Represents a comment on a post
 struct Comment: Identifiable, Codable, Equatable {
@@ -28,6 +30,7 @@ struct Comment: Identifiable, Codable, Equatable {
 
     // MARK: - Firestore Serialization
 
+    #if canImport(FirebaseFirestore)
     func toFirestoreDict() -> [String: Any] {
         [
             "id": id,
@@ -62,6 +65,7 @@ struct Comment: Identifiable, Codable, Equatable {
             self.createdAt = Date()
         }
     }
+    #endif
 }
 
 // MARK: - Helper Extensions

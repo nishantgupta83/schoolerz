@@ -11,9 +11,9 @@ struct MainTabView: View {
                 }
                 .tag(0)
 
-            ExploreView()
+            ProfileView()
                 .tabItem {
-                    Label("Explore", systemImage: "magnifyingglass")
+                    Label("Profile", systemImage: "person.fill")
                 }
                 .tag(1)
 

@@ -3,13 +3,13 @@ import SwiftUI
 struct PostComposerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var type: PostType = .offer
-    @State private var body = ""
+    @State private var postBody = ""
     @State private var neighborhood = "Downtown"
     @State private var showDiscardAlert = false
 
     let onSubmit: (PostType, String, String) async -> Void
 
-    private var hasContent: Bool { !body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    private var hasContent: Bool { !postBody.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
     var body: some View {
         NavigationStack {
@@ -32,7 +32,7 @@ struct PostComposerView: View {
                 }
 
                 Section("Description") {
-                    TextEditor(text: $body)
+                    TextEditor(text: $postBody)
                         .frame(minHeight: 120)
                 }
             }
@@ -47,7 +47,7 @@ struct PostComposerView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Post") {
                         Task {
-                            await onSubmit(type, body, neighborhood)
+                            await onSubmit(type, postBody, neighborhood)
                             dismiss()
                         }
                     }

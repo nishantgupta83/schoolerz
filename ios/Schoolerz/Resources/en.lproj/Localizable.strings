@@ -1,0 +1,52 @@
+/* Feed */
+"feed_title" = "Feed";
+"post_type_offer" = "Offer";
+"post_type_request" = "Request";
+
+/* Filters */
+"filter_all" = "All";
+"filter_offers" = "Offers";
+"filter_requests" = "Requests";
+
+/* Post Composer */
+"new_post" = "New Post";
+"post_type" = "Type";
+"neighborhood" = "Neighborhood";
+"description" = "Description";
+"cancel" = "Cancel";
+"post" = "Post";
+"discard_draft" = "Discard Draft?";
+"discard" = "Discard";
+"keep_editing" = "Keep Editing";
+
+/* Settings */
+"settings_title" = "Settings";
+"appearance" = "Appearance";
+"theme" = "Theme";
+"theme_system" = "System";
+"theme_light" = "Light";
+"theme_dark" = "Dark";
+"security" = "Security";
+"use_face_id" = "Use Face ID";
+"change_pin" = "Change PIN";
+"about" = "About";
+"version" = "Version";
+
+/* Auth */
+"enter_pin" = "Enter PIN";
+"set_pin" = "Set PIN";
+"confirm_pin" = "Confirm PIN";
+"pin_mismatch" = "PINs don't match";
+
+/* Navigation */
+"tab_feed" = "Feed";
+"tab_explore" = "Explore";
+"tab_settings" = "Settings";
+
+/* Empty States */
+"no_posts" = "No posts yet";
+"be_first_to_post" = "Be the first to post!";
+
+/* Errors */
+"error" = "Error";
+"retry" = "Retry";

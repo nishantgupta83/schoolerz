@@ -1,4 +1,7 @@
+import Foundation
+#if canImport(FirebaseAuth)
 import FirebaseAuth
+#endif
 
 /// Handles Firebase authentication (anonymous auth on launch)
 @MainActor
@@ -8,14 +11,31 @@ final class AuthService {
     private init() {}
 
     var currentUserId: String? {
-        Auth.auth().currentUser?.uid
+        #if canImport(FirebaseAuth)
+        if AppMode.current == .firebase {
+            return Auth.auth().currentUser?.uid
+        }
+        #endif
+        // Mock mode: return a device-based ID
+        return "anonymous-user"
     }
 
     var isAuthenticated: Bool {
-        Auth.auth().currentUser != nil
+        #if canImport(FirebaseAuth)
+        if AppMode.current == .firebase {
+            return Auth.auth().currentUser != nil
+        }
+        #endif
+        // Mock mode: always authenticated
+        return true
     }
 
     func signInAnonymously() async {
+        #if canImport(FirebaseAuth)
+        guard AppMode.current == .firebase else {
+            print("Mock mode: Skipping Firebase sign-in")
+            return
+        }
         guard Auth.auth().currentUser == nil else { return }
 
         do {
@@ -24,9 +44,16 @@ final class AuthService {
         } catch {
             print("Anonymous sign-in failed: \(error.localizedDescription)")
         }
+        #else
+        print("Mock mode: Firebase not available, skipping sign-in")
+        #endif
     }
 
     func signOut() throws {
-        try Auth.auth().signOut()
+        #if canImport(FirebaseAuth)
+        if AppMode.current == .firebase {
+            try Auth.auth().signOut()
+        }
+        #endif
     }
 }
