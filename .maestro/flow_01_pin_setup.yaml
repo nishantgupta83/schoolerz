@@ -1,0 +1,45 @@
+# Flow 1: PIN Setup Flow (First-time user)
+# Tests the initial PIN creation process
+
+appId: ${APP_ID}
+
+---
+
+- launchApp:
+    clearState: true
+
+- assertVisible:
+    text: "Create.*PIN|Set.*PIN|Enter.*PIN"
+    optional: true
+
+# Enter 4-digit PIN
+- tapOn:
+    text: "1"
+- tapOn:
+    text: "2"
+- tapOn:
+    text: "3"
+- tapOn:
+    text: "4"
+
+- extendedWaitUntil:
+    visible: "Confirm|Re-enter|Verify"
+    timeout: 3000
+
+# Confirm PIN
+- tapOn:
+    text: "1"
+- tapOn:
+    text: "2"
+- tapOn:
+    text: "3"
+- tapOn:
+    text: "4"
+
+# Should navigate to main screen
+- extendedWaitUntil:
+    visible: "Feed|Home|Posts"
+    timeout: 5000
+
+- assertVisible:
+    text: "Feed|Home|Offers|Requests"

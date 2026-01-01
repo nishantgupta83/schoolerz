@@ -1,0 +1,31 @@
+# Flow 2: PIN Login Flow (Returning user)
+# Tests PIN login for existing users
+
+appId: ${APP_ID}
+
+---
+
+- launchApp:
+    clearState: false
+
+- assertVisible:
+    text: "Enter.*PIN|Welcome|Login"
+    optional: true
+
+# Enter stored PIN
+- tapOn:
+    text: "1"
+- tapOn:
+    text: "2"
+- tapOn:
+    text: "3"
+- tapOn:
+    text: "4"
+
+# Should navigate to main screen
+- extendedWaitUntil:
+    visible: "Feed|Home|Posts"
+    timeout: 5000
+
+- assertVisible:
+    text: "Feed|Offers|Requests"

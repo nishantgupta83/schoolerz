@@ -24,9 +24,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun PostCard(post: Post, onComment: () -> Unit, modifier: Modifier = Modifier) {
+fun PostCard(post: Post, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().clickable { onClick() },
         shape = RoundedCornerShape(Tokens.Radius.medium)
     ) {
         Column(modifier = Modifier.padding(Tokens.Spacing.m)) {
@@ -60,10 +60,7 @@ fun PostCard(post: Post, onComment: () -> Unit, modifier: Modifier = Modifier) {
                     Spacer(Modifier.width(4.dp))
                     Text("${post.likeCount}", style = MaterialTheme.typography.labelMedium)
                 }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { onComment() }
-                ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Outlined.ChatBubbleOutline, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(4.dp))
                     Text("${post.commentCount}", style = MaterialTheme.typography.labelMedium)

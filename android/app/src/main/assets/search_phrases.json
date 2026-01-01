@@ -1,0 +1,71 @@
+{
+  "synonyms": {
+    "dog walking": ["dog walker", "pet care", "walk dog", "walk my dog", "pet sitting", "dog sitter", "walk dogs"],
+    "tutoring": ["tutor", "homework help", "study help", "academic help", "math help", "test prep", "SAT prep", "ACT prep"],
+    "babysitting": ["babysitter", "childcare", "watch kids", "nanny", "child care", "watch children", "kids care"],
+    "lawn care": ["mowing", "yard work", "landscaping", "grass cutting", "lawn mowing", "garden work", "yard cleanup"],
+    "tech help": ["computer help", "phone help", "IT support", "fix computer", "tech support", "technology help", "device help"],
+    "music lessons": ["music teacher", "piano lessons", "guitar lessons", "instrument lessons", "music tutor", "learn music"],
+    "essay review": ["essay help", "writing help", "proofread", "proofreading", "edit essay", "paper review", "editing"],
+    "car wash": ["auto detailing", "car cleaning", "wash car", "car detailing", "clean car", "vehicle wash"]
+  },
+  "intentKeywords": {
+    "offer": ["available", "offering", "can help", "will do", "experienced in", "providing", "I offer", "looking to help"],
+    "request": ["need", "looking for", "searching for", "want", "require", "help wanted", "seeking", "in need of"]
+  },
+  "serviceMapping": {
+    "dog": "dog_walking",
+    "pet": "dog_walking",
+    "puppy": "dog_walking",
+    "walk": "dog_walking",
+    "tutor": "tutoring",
+    "homework": "tutoring",
+    "math": "tutoring",
+    "study": "tutoring",
+    "test": "tutoring",
+    "babysit": "babysitting",
+    "child": "babysitting",
+    "kids": "babysitting",
+    "nanny": "babysitting",
+    "lawn": "lawn_care",
+    "yard": "lawn_care",
+    "mow": "lawn_care",
+    "garden": "lawn_care",
+    "grass": "lawn_care",
+    "tech": "tech_help",
+    "computer": "tech_help",
+    "phone": "tech_help",
+    "laptop": "tech_help",
+    "tablet": "tech_help",
+    "music": "music_lessons",
+    "piano": "music_lessons",
+    "guitar": "music_lessons",
+    "instrument": "music_lessons",
+    "essay": "essay_review",
+    "writing": "essay_review",
+    "proofread": "essay_review",
+    "paper": "essay_review",
+    "car": "car_wash",
+    "auto": "car_wash",
+    "vehicle": "car_wash",
+    "detail": "car_wash"
+  },
+  "priceKeywords": {
+    "cheap": {"maxRate": 15},
+    "affordable": {"maxRate": 20},
+    "budget": {"maxRate": 15},
+    "experienced": {"experienceLevel": "experienced"},
+    "beginner": {"experienceLevel": "beginner"},
+    "intermediate": {"experienceLevel": "intermediate"}
+  },
+  "commonPhrases": [
+    {"phrase": "walk my dog", "expanded": ["dog walking", "pet care"]},
+    {"phrase": "help with homework", "expanded": ["tutoring", "homework help", "study assistance"]},
+    {"phrase": "watch my kids", "expanded": ["babysitting", "childcare", "child care"]},
+    {"phrase": "mow my lawn", "expanded": ["lawn care", "yard work", "landscaping"]},
+    {"phrase": "fix my computer", "expanded": ["tech help", "IT support", "computer repair"]},
+    {"phrase": "learn piano", "expanded": ["music lessons", "piano lessons", "piano teacher"]},
+    {"phrase": "edit my essay", "expanded": ["essay review", "proofreading", "writing help"]},
+    {"phrase": "clean my car", "expanded": ["car wash", "auto detailing", "car cleaning"]}
+  ]
+}

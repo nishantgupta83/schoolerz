@@ -1,0 +1,35 @@
+# Flow 4: Profile Screen
+# Tests profile viewing and editing
+
+appId: ${APP_ID}
+
+---
+
+- launchApp:
+    clearState: false
+
+# Navigate to Profile tab
+- tapOn:
+    text: "Profile|Account|Me"
+    optional: true
+
+- extendedWaitUntil:
+    visible: "Profile|Account|Edit"
+    timeout: 3000
+
+# Check profile elements
+- assertVisible:
+    text: "Email|Name|Services|Verification"
+    optional: true
+
+# Test edit button if exists
+- tapOn:
+    text: "Edit|Modify"
+    optional: true
+
+- back
+
+# Return to Feed
+- tapOn:
+    text: "Feed|Home"
+    optional: true

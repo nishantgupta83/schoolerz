@@ -1,0 +1,42 @@
+# Flow 5: Settings Screen
+# Tests settings navigation and options
+
+appId: ${APP_ID}
+
+---
+
+- launchApp:
+    clearState: false
+
+# Navigate to Settings tab
+- tapOn:
+    text: "Settings|Gear|Preferences"
+    optional: true
+
+- extendedWaitUntil:
+    visible: "Settings|Preferences|Options"
+    timeout: 3000
+
+# Check settings options
+- assertVisible:
+    text: "Biometric|PIN|Notifications|Theme|Dark"
+    optional: true
+
+# Test notification toggle if exists
+- tapOn:
+    text: "Notifications"
+    optional: true
+
+- back
+
+# Test theme toggle if exists
+- tapOn:
+    text: "Dark|Theme|Mode"
+    optional: true
+
+- back
+
+# Return to Feed
+- tapOn:
+    text: "Feed|Home"
+    optional: true

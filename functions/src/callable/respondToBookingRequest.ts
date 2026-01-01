@@ -32,6 +32,13 @@ export const respondToBookingRequest = onCall(async (req) => {
   const ref = admin.firestore().collection("bookingRequests").doc(requestId);
 
   // Use transaction to prevent race conditions
+  // Store booking data for notification after transaction
+  let notificationData: {
+    requesterId: string;
+    providerName: string;
+    requestId: string;
+  } | null = null;
+
   await admin.firestore().runTransaction(async (tx) => {
     const snap = await tx.get(ref);
     if (!snap.exists) {
@@ -44,6 +51,18 @@ export const respondToBookingRequest = onCall(async (req) => {
 
     if (!isProvider && !isRequester) {
       throw new HttpsError("permission-denied", "Not a participant");
+    }
+
+    // Enforce role constraints: provider must be teen, requester must be parent
+    const [providerUser, requesterUser] = await Promise.all([
+      getUserOrThrow(br.br_providerId),
+      getUserOrThrow(br.br_requesterId),
+    ]);
+    if (providerUser.usr_role !== "teen") {
+      throw new HttpsError("failed-precondition", "Provider must be teen");
+    }
+    if (requesterUser.usr_role !== "parent") {
+      throw new HttpsError("failed-precondition", "Requester must be parent");
     }
 
     // Provider can: accept/decline (when pending)
@@ -88,7 +107,81 @@ export const respondToBookingRequest = onCall(async (req) => {
     }
 
     tx.update(ref, updateData);
+
+    // Store data for notification if accepting
+    if (newStatus === "accepted") {
+      notificationData = {
+        requesterId: br.br_requesterId,
+        providerName: providerUser.usr_publicName || "Provider",
+        requestId,
+      };
+    }
   });
+
+  // Send push notification after successful transaction (outside transaction)
+  if (notificationData !== null) {
+    const nd = notificationData as { requesterId: string; providerName: string; requestId: string };
+    try {
+      const fcmDoc = await admin.firestore()
+        .collection("users")
+        .doc(nd.requesterId)
+        .collection("private")
+        .doc("fcm")
+        .get();
+
+      const tokens = fcmDoc.exists ? (fcmDoc.data()?.tokens as string[] || []) : [];
+
+      if (tokens.length > 0) {
+        const message = {
+          tokens,
+          notification: {
+            title: "Request Accepted!",
+            body: `${nd.providerName} accepted your booking request`,
+          },
+          data: {
+            requestId: nd.requestId,
+            type: "booking_accepted",
+          },
+          android: {
+            priority: "high" as const,
+          },
+          apns: {
+            payload: {
+              aps: {
+                sound: "default",
+              },
+            },
+          },
+        };
+
+        const response = await admin.messaging().sendEachForMulticast(message);
+
+        // Clean up invalid tokens
+        if (response.failureCount > 0) {
+          const invalidTokens: string[] = [];
+          response.responses.forEach((resp, idx) => {
+            if (!resp.success && resp.error?.code === "messaging/registration-token-not-registered") {
+              invalidTokens.push(tokens[idx]);
+            }
+          });
+
+          if (invalidTokens.length > 0) {
+            await admin.firestore()
+              .collection("users")
+              .doc(nd.requesterId)
+              .collection("private")
+              .doc("fcm")
+              .update({
+                tokens: admin.firestore.FieldValue.arrayRemove(...invalidTokens),
+              });
+          }
+        }
+      }
+    } catch (fcmError) {
+      // Log but don't fail the request - notification is best-effort
+      console.error("FCM notification failed:", fcmError);
+    }
+  }
 
   return { ok: true };
 });

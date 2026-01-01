@@ -1,0 +1,45 @@
+# Flow 3: Feed Screen Navigation
+# Tests feed interactions, filtering, and scrolling
+
+appId: ${APP_ID}
+
+---
+
+- launchApp:
+    clearState: false
+
+# Wait for feed to load
+- extendedWaitUntil:
+    visible: "Feed|Home|Posts"
+    timeout: 5000
+
+# Test filter buttons if visible
+- tapOn:
+    text: "All|Offers|Requests"
+    optional: true
+
+- scroll:
+    direction: DOWN
+
+- scroll:
+    direction: DOWN
+
+- scroll:
+    direction: UP
+
+# Test pull to refresh
+- swipe:
+    direction: DOWN
+    duration: 500
+
+- extendedWaitUntil:
+    visible: "Feed|Home|Posts"
+    timeout: 5000
+
+# Tap on a post card if visible
+- tapOn:
+    text: ".*"
+    index: 0
+    optional: true
+
+- back

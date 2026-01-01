@@ -40,6 +40,23 @@ export const createConversationFromAcceptedRequest = onCall(async (req) => {
     throw new HttpsError("permission-denied", "Not a participant in this booking");
   }
 
+  // Enforce role constraints: provider must be teen, requester must be parent
+  const [providerUser, requesterUser] = await Promise.all([
+    getUserOrThrow(br.br_providerId),
+    getUserOrThrow(br.br_requesterId),
+  ]);
+  if (providerUser.usr_role !== "teen") {
+    throw new HttpsError("failed-precondition", "Provider must be teen");
+  }
+  if (requesterUser.usr_role !== "parent") {
+    throw new HttpsError("failed-precondition", "Requester must be parent");
+  }
+
+  // Check if either participant is chat restricted
+  if (providerUser.usr_isChatRestricted || requesterUser.usr_isChatRestricted) {
+    throw new HttpsError("permission-denied", "Participant is chat restricted");
+  }
+
   // Use a deterministic doc ID based on booking request to prevent duplicates
   const convDocId = `conv_${requestId}`;
   const convRef = admin.firestore().collection("conversations").doc(convDocId);

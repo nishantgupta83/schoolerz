@@ -5,15 +5,30 @@ service cloud.firestore {
     function uid() { return request.auth.uid; }
     function isOwner(userId) { return isAuth() && uid() == userId; }
 
-    // Users collection
+    // Users collection - PUBLIC fields only (readable by any authenticated user)
+    // Public: usr_publicName, usr_avatarUrl, usr_role, usr_verificationStatus, usr_isVerified,
+    //         usr_neighborhoodId, usr_zipcode, usr_services, usr_bio
     match /users/{userId} {
       allow read: if isAuth();
       allow create: if isOwner(userId);
       allow update: if isOwner(userId)
         && !('usr_isBlocked' in request.resource.data)
         && !('usr_strikeCount' in request.resource.data)
-        && !('usr_isChatRestricted' in request.resource.data);
+        && !('usr_isChatRestricted' in request.resource.data)
+        // Prevent writing private fields to public document
+        && !('usr_email' in request.resource.data)
+        && !('usr_phone' in request.resource.data)
+        && !('usr_displayNamePrivate' in request.resource.data)
+        && !('usr_schoolName' in request.resource.data)
+        && !('usr_gradeLevel' in request.resource.data);
       allow delete: if false;
+
+      // Private subcollection - owner-only read, CF-only writes
+      // Contains: usr_email, usr_phone, usr_displayNamePrivate, usr_schoolName, usr_gradeLevel, usr_fcmTokens
+      match /private/{docId} {
+        allow read: if isOwner(userId);
+        allow create, update, delete: if false; // Cloud Function only
+      }
     }
 
     // Posts collection - writes via Cloud Function only

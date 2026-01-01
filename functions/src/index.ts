@@ -23,3 +23,4 @@ export { approveContactShare } from "./callable/approveContactShare";
 
 // Scheduled Functions
 export { cleanupRateLimits } from "./scheduled/cleanupRateLimits";
+export { decayStrikes } from "./scheduled/decayStrikes";

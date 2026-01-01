@@ -2,30 +2,77 @@ import * as admin from "firebase-admin";
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 import { enforceRateLimit } from "../utils/rateLimit";
 import { filterTextOrReject } from "../utils/contentFilter";
-import { getUserOrThrow, requireAuth, requireNotBlocked, requireRole } from "../utils/authz";
+import {
+  getUserOrThrow,
+  requireAuth,
+  requireNotBlocked,
+  requireRole,
+  requireVerified,
+  createAuthorSnapshot,
+  isBlockedBetween,
+  isNewUser,
+} from "../utils/authz";
 
 const DELIVERY_MODES = new Set(["in_person", "online"]);
 const MEETING_PREFERENCES = new Set(["public_place", "online", "parent_will_share_privately"]);
 
-async function isBlockedBetween(a: string, b: string): Promise<boolean> {
-  const [s1, s2] = await Promise.all([
-    admin.firestore().collection("blocks").doc(`${a}_${b}`).get(),
-    admin.firestore().collection("blocks").doc(`${b}_${a}`).get(),
-  ]);
-  return s1.exists || s2.exists;
+// Cooldown period after decline (24 hours in milliseconds)
+const DECLINE_COOLDOWN_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Check if requester has a pending request for this post
+ */
+async function hasPendingRequest(requesterId: string, postId: string): Promise<boolean> {
+  const existing = await admin.firestore()
+    .collection("bookingRequests")
+    .where("br_requesterId", "==", requesterId)
+    .where("br_postId", "==", postId)
+    .where("br_status", "==", "pending")
+    .limit(1)
+    .get();
+  return !existing.empty;
+}
+
+/**
+ * Check if requester is in cooldown after being declined
+ */
+async function isInDeclineCooldown(requesterId: string, postId: string): Promise<boolean> {
+  const cooldownCutoff = admin.firestore.Timestamp.fromDate(
+    new Date(Date.now() - DECLINE_COOLDOWN_MS)
+  );
+
+  const recentDeclined = await admin.firestore()
+    .collection("bookingRequests")
+    .where("br_requesterId", "==", requesterId)
+    .where("br_postId", "==", postId)
+    .where("br_status", "==", "declined")
+    .where("br_respondedAt", ">", cooldownCutoff)
+    .limit(1)
+    .get();
+
+  return !recentDeclined.empty;
 }
 
 /**
  * Parent creates a booking request to a Teen1 (provider).
  * Only parents can create booking requests.
+ * Prevents duplicate pending requests and enforces cooldown after decline.
  */
 export const createBookingRequest = onCall(async (req) => {
   const uid = await requireAuth(req.auth);
   const user = await getUserOrThrow(uid);
   requireNotBlocked(user);
   requireRole(user, "parent");
+  requireVerified(user); // Must be verified to create booking
 
-  await enforceRateLimit({ key: `createBookingRequest:${uid}`, windowSec: 86400, max: 10 });
+  // Apply rate limit with stricter limits for new users
+  await enforceRateLimit({
+    key: `createBookingRequest:${uid}`,
+    windowSec: 86400,
+    max: 10,
+    isNewUser: isNewUser(user),
+    newUserMax: 3, // New users can only create 3 requests/day
+  });
 
   const data = req.data ?? {};
   const br_postId = String(data.br_postId || "");
@@ -43,6 +90,12 @@ export const createBookingRequest = onCall(async (req) => {
     throw new HttpsError("failed-precondition", "Post inactive");
   }
 
+  // Verify post author is a teen (Teen1 provider model)
+  const authorSnapshot = post.pst_authorSnapshot;
+  if (authorSnapshot?.role !== "teen") {
+    throw new HttpsError("failed-precondition", "Can only book services from teen providers");
+  }
+
   const br_providerId = String(post.pst_authorId || "");
   if (!br_providerId) {
     throw new HttpsError("failed-precondition", "Post missing authorId");
@@ -50,7 +103,17 @@ export const createBookingRequest = onCall(async (req) => {
 
   // Check blocks
   if (await isBlockedBetween(uid, br_providerId)) {
-    throw new HttpsError("permission-denied", "Blocked user");
+    throw new HttpsError("permission-denied", "Cannot interact with this user");
+  }
+
+  // Prevent duplicate pending requests (1 pending per post per requester)
+  if (await hasPendingRequest(uid, br_postId)) {
+    throw new HttpsError("failed-precondition", "You already have a pending request for this post");
+  }
+
+  // Check cooldown after decline
+  if (await isInDeclineCooldown(uid, br_postId)) {
+    throw new HttpsError("failed-precondition", "Please wait before requesting again");
   }
 
   // Validate structured fields
@@ -75,17 +138,16 @@ export const createBookingRequest = onCall(async (req) => {
   }
 
   // Filter notes
-  const notesRes = await filterTextOrReject(String(data.br_notes || ""), { maxLen: 300 });
+  const notesRes = await filterTextOrReject(String(data.br_notes || ""), {
+    maxLen: 300,
+    mode: "STRICT",
+  });
   if (!notesRes.ok) {
     throw new HttpsError("invalid-argument", `Notes blocked: ${notesRes.reason}`);
   }
 
   const now = admin.firestore.FieldValue.serverTimestamp();
-  const br_requesterSnapshot = {
-    publicName: user.usr_publicName,
-    avatarUrl: user.usr_avatarUrl ?? null,
-    verificationStatus: user.usr_verificationStatus ?? "unverified",
-  };
+  const br_requesterSnapshot = createAuthorSnapshot(user);
 
   const bookingDoc = {
     br_postId,

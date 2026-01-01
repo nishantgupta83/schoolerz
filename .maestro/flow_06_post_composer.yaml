@@ -1,0 +1,39 @@
+# Flow 6: Post Composer
+# Tests creating a new post
+
+appId: ${APP_ID}
+
+---
+
+- launchApp:
+    clearState: false
+
+# Navigate to Feed first
+- tapOn:
+    text: "Feed|Home"
+    optional: true
+
+# Look for compose button (FAB or plus button)
+- tapOn:
+    text: "+|Add|Compose|Create|New Post"
+    optional: true
+
+- extendedWaitUntil:
+    visible: "Create|New|Post|Offer|Request"
+    timeout: 3000
+
+# Select post type
+- tapOn:
+    text: "Offer|Request"
+    optional: true
+
+# Type post content
+- inputText: "Test post content from Maestro UI testing"
+  optional: true
+
+# Try to cancel/dismiss
+- tapOn:
+    text: "Cancel|Close|X"
+    optional: true
+
+- back

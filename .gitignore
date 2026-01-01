@@ -1,24 +1,75 @@
-# OS
+# ===== OS =====
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# IDE
+# ===== IDE =====
 .idea/
 *.swp
 *~
+*.sublime-project
+*.sublime-workspace
+.vscode/
+*.code-workspace
 
-# Environment
+# ===== Environment & Secrets (NEVER COMMIT) =====
 .env
-.env.local
+.env.*
+!.env.example
+*.local
 
-# Secrets (NEVER commit)
+# Firebase configs (use mock mode without these)
 GoogleService-Info.plist
 google-services.json
+
+# Signing & Certificates
 *.jks
 *.keystore
 *.p12
 *.mobileprovision
 *.cer
+*.pem
+*.key
+keystore.properties
+signing.properties
 
-# Archives
+# ===== Build Outputs =====
+build/
+dist/
+out/
+*.apk
+*.aab
+*.ipa
+*.app
+*.dSYM.zip
+*.dSYM
+
+# ===== Dependencies =====
+node_modules/
+.pnp/
+.pnp.js
+
+# ===== Logs =====
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== Testing =====
+coverage/
+*.lcov
+.nyc_output/
+
+# ===== Archives =====
 *.zip
+*.tar.gz
+*.rar
+
+# ===== Claude/AI =====
+.claude/
+RESUME.md

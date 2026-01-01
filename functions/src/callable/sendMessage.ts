@@ -57,6 +57,18 @@ export const sendMessage = onCall(async (req) => {
     throw new HttpsError("permission-denied", "Not a participant");
   }
 
+  // Enforce parent+teen constraint: one participant must be parent, one must be teen
+  if (participants.length === 2) {
+    const [user1, user2] = await Promise.all([
+      getUserOrThrow(participants[0]),
+      getUserOrThrow(participants[1]),
+    ]);
+    const roles = new Set([user1.usr_role, user2.usr_role]);
+    if (!roles.has("parent") || !roles.has("teen")) {
+      throw new HttpsError("permission-denied", "Chat requires parent + teen");
+    }
+  }
+
   // Verify booking context exists and is accepted
   const bookingRequestId = conv.cv_bookingRequestId as string;
   if (!bookingRequestId) {

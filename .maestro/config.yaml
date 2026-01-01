@@ -1,0 +1,8 @@
+# Maestro Configuration
+appId:
+  ios: com.schoolerz.app
+  android: com.schoolerz
+
+# Default settings
+flows:
+  - flow_*.yaml

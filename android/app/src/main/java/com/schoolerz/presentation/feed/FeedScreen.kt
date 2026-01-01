@@ -1,11 +1,13 @@
 package com.schoolerz.presentation.feed
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +22,7 @@ import com.schoolerz.presentation.theme.Tokens
 @Composable
 fun FeedScreen(
     viewModel: FeedViewModel = hiltViewModel(),
-    onOpenComments: (Post) -> Unit
+    onOpenPost: (Post) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showComposer by remember { mutableStateOf(false) }
@@ -48,9 +50,6 @@ fun FeedScreen(
     val filteredPosts by viewModel.filteredPosts.collectAsStateWithLifecycle()
 
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Feed") })
-        },
         floatingActionButton = {
             FloatingActionButton(onClick = { showComposer = true }) {
                 Icon(Icons.Default.Add, contentDescription = "New Post")
@@ -58,44 +57,73 @@ fun FeedScreen(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-            FilterSegment(
-                selected = state.filter,
-                onSelect = { viewModel.setFilter(it) }
-            )
+        LazyColumn(
+            modifier = Modifier.padding(padding)
+        ) {
+            // Hero Section with search and categories
+            item {
+                HeroSection(
+                    searchQuery = state.searchQuery,
+                    onSearchChange = viewModel::onSearchChange,
+                    selectedService = state.selectedService,
+                    onServiceClick = viewModel::onServiceSelect
+                )
+            }
 
+            // Post type filter (Offer/Request/All)
+            item {
+                FilterSegment(
+                    selected = state.filter,
+                    onSelect = { viewModel.setFilter(it) }
+                )
+            }
+
+            // Content based on state
             when {
                 state.isLoading -> {
-                    repeat(5) { ShimmerPostCard(modifier = Modifier.padding(Tokens.Spacing.m)) }
+                    items(5) {
+                        ShimmerPostCard(modifier = Modifier.padding(Tokens.Spacing.m))
+                    }
                 }
                 filteredPosts.isEmpty() && !state.isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = "No posts yet",
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Spacer(modifier = Modifier.height(Tokens.Spacing.s))
-                            Text(
-                                text = "Be the first to post!",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                    item {
+                        val hasFilters = state.searchQuery.isNotBlank() ||
+                                        state.selectedService != null ||
+                                        state.filter != null
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    text = if (hasFilters) "No posts match your search" else "No posts yet",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Spacer(modifier = Modifier.height(Tokens.Spacing.s))
+                                if (hasFilters) {
+                                    TextButton(onClick = { viewModel.clearAllFilters() }) {
+                                        Text("Clear filters")
+                                    }
+                                } else {
+                                    Text(
+                                        text = "Be the first to post!",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
                         }
                     }
                 }
                 else -> {
-                    LazyColumn {
-                        items(filteredPosts, key = { it.id }) { post ->
-                            PostCard(
-                                post = post,
-                                onComment = { onOpenComments(post) },
-                                modifier = Modifier.padding(horizontal = Tokens.Spacing.m, vertical = Tokens.Spacing.s)
-                            )
-                        }
+                    items(filteredPosts, key = { it.id }) { post ->
+                        PostCard(
+                            post = post,
+                            onClick = { onOpenPost(post) },
+                            modifier = Modifier.padding(horizontal = Tokens.Spacing.m, vertical = Tokens.Spacing.s)
+                        )
                     }
                 }
             }

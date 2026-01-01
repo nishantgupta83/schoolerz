@@ -7,26 +7,37 @@ import { onSchedule } from "firebase-functions/v2/scheduler";
  * This prevents the rateLimits collection from growing indefinitely.
  */
 export const cleanupRateLimits = onSchedule("every 24 hours", async () => {
+  const BATCH_SIZE = 500;
   const cutoff = admin.firestore.Timestamp.fromDate(
     new Date(Date.now() - 24 * 60 * 60 * 1000)
   );
 
-  // Query stale rate limit documents (updatedAt older than 24 hours)
-  const stale = await admin.firestore()
-    .collection("rateLimits")
-    .where("updatedAt", "<", cutoff)
-    .limit(500) // Batch size to avoid timeout
-    .get();
+  let hasMore = true;
+  let totalCleaned = 0;
 
-  if (stale.empty) {
-    console.log("No stale rate limit documents to clean up");
-    return;
+  // Paginate through all stale documents
+  while (hasMore) {
+    const stale = await admin.firestore()
+      .collection("rateLimits")
+      .where("updatedAt", "<", cutoff)
+      .limit(BATCH_SIZE)
+      .get();
+
+    if (stale.empty) {
+      hasMore = false;
+      break;
+    }
+
+    const batch = admin.firestore().batch();
+    stale.docs.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+
+    totalCleaned += stale.size;
+
+    if (stale.size < BATCH_SIZE) {
+      hasMore = false;
+    }
   }
 
-  // Use batch delete for efficiency
-  const batch = admin.firestore().batch();
-  stale.docs.forEach(doc => batch.delete(doc.ref));
-  await batch.commit();
-
-  console.log(`Cleaned up ${stale.size} stale rate limit documents`);
+  console.log(`Cleaned up ${totalCleaned} stale rate limit documents`);
 });

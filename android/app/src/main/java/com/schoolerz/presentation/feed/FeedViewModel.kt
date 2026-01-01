@@ -2,8 +2,10 @@ package com.schoolerz.presentation.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.schoolerz.core.util.SemanticSearch
 import com.schoolerz.domain.model.Post
 import com.schoolerz.domain.model.PostType
+import com.schoolerz.domain.model.ServiceType
 import com.schoolerz.domain.repository.AuthService
 import com.schoolerz.domain.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +23,9 @@ data class FeedState(
     val isRefreshing: Boolean = false,
     val posts: List<Post> = emptyList(),
     val error: String? = null,
-    val filter: PostType? = null
+    val filter: PostType? = null,
+    val searchQuery: String = "",
+    val selectedService: ServiceType? = null
 )
 
 @HiltViewModel
@@ -32,9 +36,15 @@ class FeedViewModel @Inject constructor(
     private val _state = MutableStateFlow(FeedState())
     val state = _state.asStateFlow()
 
-    // Derived StateFlow for filtered posts - reactive and efficient
+    // Derived StateFlow for filtered posts using semantic search
     val filteredPosts = _state.map { state ->
-        state.filter?.let { f -> state.posts.filter { it.type == f } } ?: state.posts
+        // Use SemanticSearch for intelligent filtering and ranking
+        SemanticSearch.searchPosts(
+            posts = state.posts,
+            query = state.searchQuery.trim(),
+            serviceType = state.selectedService,
+            postType = state.filter
+        )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun fetchPosts() {
@@ -59,9 +69,40 @@ class FeedViewModel @Inject constructor(
         _state.update { it.copy(filter = filter) }
     }
 
+    fun onSearchChange(query: String) {
+        _state.update { it.copy(searchQuery = query) }
+    }
+
+    fun onServiceSelect(service: ServiceType?) {
+        _state.update { currentState ->
+            if (service == null) {
+                // "All" clicked - clear service filter
+                currentState.copy(selectedService = null)
+            } else {
+                // Toggle selection - if same service clicked, deselect
+                val newSelection = if (currentState.selectedService == service) null else service
+                currentState.copy(selectedService = newSelection)
+            }
+        }
+    }
+
+    fun clearSearch() {
+        _state.update { it.copy(searchQuery = "") }
+    }
+
+    fun clearAllFilters() {
+        _state.update { it.copy(searchQuery = "", selectedService = null, filter = null) }
+    }
+
     fun clearError() {
         _state.update { it.copy(error = null) }
     }
+
+    // Check if any filters are active
+    val hasActiveFilters: Boolean
+        get() = _state.value.searchQuery.isNotBlank() ||
+                _state.value.selectedService != null ||
+                _state.value.filter != null
 
     fun createPost(type: PostType, body: String, neighborhood: String) {
         val post = Post(
